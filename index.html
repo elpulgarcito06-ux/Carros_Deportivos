@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carros Deportivos</title>
+  <style>
+    :root{
+      --bg:#0d0f14;
+      --bg2:#11151d;
+      --card:#151a24;
+      --text:white;
+      --neon:#00e1ff;
+    }
+    body.light{
+      --bg:#f2f2f2;
+      --bg2:#ffffff;
+      --card:#e7e7e7;
+      --text:#111;
+      --neon:#0077aa;
+    }
+
+    body{
+      margin:0;font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);color:var(--text);
+      transition:.4s;
+      overflow-x:hidden;
+    }
+
+    body:before{
+      content:"";
+      position:fixed;inset:0;
+      background: radial-gradient(circle at 20% 80%, #ff005e33, transparent),
+                  radial-gradient(circle at 80% 20%, #00d9ff33, transparent);
+      animation:move 12s infinite alternate;
+      pointer-events:none;
+    }
+    @keyframes move{
+      0%{transform:translate(0,0)}
+      100%{transform:translate(40px,-40px)}
+    }
+
+    nav{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:15px 25px;
+      background:var(--bg2);
+      position:sticky;top:0;z-index:10;
+      box-shadow:0 2px 8px rgba(0,0,0,.6);
+    }
+    .nav-title{font-size:1.3rem;font-weight:bold;letter-spacing:.5px}
+    .nav-buttons button{
+      margin-left:10px;padding:8px 14px;border:none;
+      border-radius:6px;cursor:pointer;font-weight:bold;
+    }
+
+    .theme-btn{background:#ffce00}
+    .menu-btn{background:#00e1ff}
+
+    .container{max-width:1100px;margin:auto;padding:20px;}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px,1fr));gap:20px;}
+
+    .card{
+      background:var(--card);
+      border-radius:12px;overflow:hidden;transition:.3s;cursor:pointer;border:1px solid #222;
+    }
+    .card:hover{
+      transform:scale(1.06);
+      box-shadow:0 0 25px var(--neon),0 0 45px var(--neon);
+      border-color:var(--neon);
+    }
+    .card img{width:100%;height:170px;object-fit:cover}
+    .card-content{padding:15px}
+    .card-content h3{margin:0 0 8px;font-size:1.2rem}
+    .stat{font-size:.9rem;margin:4px 0;color:#cfcfcf}
+
+    .more-btn{
+      margin-top:10px;padding:6px 12px;border:none;
+      background:var(--neon);color:black;font-weight:bold;
+      border-radius:6px;cursor:pointer;width:100%;transition:.3s;
+    }
+    .more-btn:hover{filter:brightness(1.3)}
+
+    #modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;}
+    #modal.show{display:flex}
+    .modal-box{background:var(--card);width:90%;max-width:700px;border-radius:12px;padding:20px;}
+    .modal-box img{width:100%;height:300px;object-fit:cover;border-radius:8px}
+    .modal-box h2{margin-top:12px}
+    .close{display:inline-block;margin-top:12px;background:#ff4d4d;border:none;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-title">Exhibición de Carros Deportivos</div>
+  <div class="nav-buttons">
+    <button class="theme-btn" onclick="toggleTheme()">Cambiar Tema</button>
+    <button class="menu-btn" onclick="scrollToCars()">Ver Autos</button>
+  </div>
+</nav>
+
+<div class="container" id="autos">
+  <div class="grid">
+
+    <!-- Porsche 911 -->
+    <div class="card" data-name="Porsche 911" data-info="Deportivo icónico con excelente manejo." data-img="img/porshe.jpg" data-hp="443 HP" data-vmax="308 km/h" data-acc="3.5s" data-sound="https://cdn.pixabay.com/audio/2022/03/14/audio_cec5b3b4c2.mp3">
+      <img src="img/porshe.jpg" alt="Porsche 911">
+      <div class="card-content">
+        <h3>Porsche 911</h3>
+        <p class="stat">Potencia: 443 HP</p>
+        <p class="stat">Vel. Máx: 308 km/h</p>
+        <p class="stat">0-100 km/h: 3.5s</p>
+        <button class="more-btn">Más Información</button>
+      </div>
+    </div>
+
+    <!-- Nissan GT-R -->
+    <div class="card" data-name="Nissan GT-R" data-info="Conocido como 'Godzilla'." data-img="img/nissan.jpg" data-hp="565 HP" data-vmax="315 km/h" data-acc="2.9s" data-sound="https://cdn.pixabay.com/audio/2021/09/15/audio_b3b42e5ac1.mp3">
+      <img src="img/nissan.jpg" alt="Nissan GT-R">
+      <div class="card-content">
+        <h3>Nissan GT-R</h3>
+        <p class="stat">Potencia: 565 HP</p>
+        <p class="stat">Vel. Máx: 315 km/h</p>
+        <p class="stat">0-100 km/h: 2.9s</p>
+        <button class="more-btn">Más Información</button>
+      </div>
+    </div>
+
+    <!-- Mazda RX-7 -->
+    <div class="card" data-name="Mazda RX-7" data-info="Motor rotativo ligero y ágil." data-img="img/mazda.jpg" data-hp="276 HP" data-vmax="250 km/h" data-acc="4.9s" data-sound="https://cdn.pixabay.com/audio/2022/03/14/audio_58d2deccb8.mp3">
+      <img src="img/mazda.jpg" alt="Mazda RX-7">
+      <div class="card-content">
+        <h3>Mazda RX-7</h3>
+        <p class="stat">Potencia: 276 HP</p>
+        <p class="stat">Vel. Máx: 250 km/h</p>
+        <p class="stat">0-100 km/h: 4.9s</p>
+        <button class="more-btn">Más Información</button>
+      </div>
+    </div>
+
+    <!-- Ferrari 488 -->
+    <div class="card" data-name="Ferrari 488" data-info="Superdeportivo italiano con aerodinámica avanzada." data-img="img/ferrari.jpg" data-hp="661 HP" data-vmax="330 km/h" data-acc="3.0s" data-sound="https://cdn.pixabay.com/audio/2022/07/31/audio_7c9f27cdd7.mp3">
+      <img src="img/ferrari.jpg" alt="Ferrari 488">
+      <div class="card-content">
+        <h3>Ferrari 488</h3>
+        <p class="stat">Potencia: 661 HP</p>
+        <p class="stat">Vel. Máx: 330 km/h</p>
+        <p class="stat">0-100 km/h: 3.0s</p>
+        <button class="more-btn">Más Información</button>
+      </div>
+    </div>
+
+    <!-- Lamborghini Aventador -->
+    <div class="card" data-name="Lamborghini Aventador" data-info="Motor V12 brutal con diseño agresivo." data-img="img/lamborghini aventador.jpg" data-hp="730 HP" data-vmax="350 km/h" data-acc="2.8s" data-sound="https://cdn.pixabay.com/audio/2022/03/14/audio_d3eb4d9a18.mp3">
+      <img src="img/lamborghini aventador.jpg" alt="Lamborghini Aventador">
+      <div class="card-content">
+        <h3>Lamborghini Aventador</h3>
+        <p class="stat">Potencia: 730 HP</p>
+        <p class="stat">Vel. Máx: 350 km/h</p>
+        <p class="stat">0-100 km/h: 2.8s</p>
+        <button class="more-btn">Más Información</button>
+      </div>
+    </div>
+
+    <!-- Bugatti Chiron -->
+    <div class="card" data-name="Bugatti Chiron" data-info="Uno de los coches más rápidos y exclusivos del mundo." data-img="img/bugatti.jpg" data-hp="1500 HP" data-vmax="420 km/h" data-acc="2.4s" data-sound="https://cdn.pixabay.com/audio/2022/12/04/audio_b9bb0f4d5a.mp3">
+      <img src="img/bugatti.jpg" alt="Bugatti Chiron">
+      <div class="card-content">
+        <h3>Bugatti Chiron</h3>
+        <p class="stat">Potencia: 1500 HP</p>
+        <p class="stat">Vel. Máx: 420 km/h</p>
+        <p class="stat">0-100 km/h: 2.4s</p>
+        <button class="more-btn">Más Información</button>
+      </div>
+    </div>
+
+    <!-- Toyota Supra MK4 -->   
+    <div class="card" data-name="Toyota Supra MK4" data-info="Deportivo japonés legendario, famoso por su motor 2JZ." data-img="img/Toyota.jpg" data-hp="320 HP" data-vmax="250 km/h" data-acc="4.7s" data-sound="https://cdn.pixabay.com/audio/2022/03/14/audio_1b22ebd90c.mp3">
+  <img src="img/Toyota.jpg" alt="Toyota Supra MK4">
+  <div class="card-content">
+    <h3>Toyota Supra MK4</h3>
+    <p class="stat">Potencia: 320 HP</p>
+    <p class="stat">Vel. Máx: 250 km/h</p>
+    <p class="stat">0-100 km/h: 4.7s</p>
+    <button class="more-btn">Más Información</button>
+  </div>
+</div>
+
+    <!-- Ford Mustang Shelby GT500 -->
+<div class="card" data-name="Ford Mustang Shelby GT500" data-info="Versión extrema del Mustang, gran potencia y sonido agresivo." data-img="img/mustang.jpg" data-hp="760 HP" data-vmax="290 km/h" data-acc="3.3s" data-sound="https://cdn.pixabay.com/audio/2022/03/14/audio_7fa3f7ef3c.mp3">
+  <img src="img/mustang.jpg" alt="Ford Mustang Shelby GT500">
+  <div class="card-content">
+    <h3>Ford Mustang Shelby GT500</h3>
+    <p class="stat">Potencia: 760 HP</p>
+    <p class="stat">Vel. Máx: 290 km/h</p>
+    <p class="stat">0-100 km/h: 3.3s</p>
+    <button class="more-btn">Más Información</button>
+  </div>
+</div>
+ 
+    <!-- Chevrolet Corvette C8 -->
+<div class="card" data-name="Chevrolet Corvette C8" data-info="Motor central y excelente equilibrio. Muy moderno." data-img="img/chevrolet.jpg" data-hp="495 HP" data-vmax="312 km/h" data-acc="2.9s" data-sound="https://cdn.pixabay.com/audio/2022/02/23/audio_183e07535b.mp3">
+  <img src="img/chevrolet.jpg" alt="Chevrolet Corvette C8">
+  <div class="card-content">
+    <h3>Chevrolet Corvette C8</h3>
+    <p class="stat">Potencia: 495 HP</p>
+    <p class="stat">Vel. Máx: 312 km/h</p>
+    <p class="stat">0-100 km/h: 2.9s</p>
+    <button class="more-btn">Más Información</button>
+  </div>
+</div>
+
+    <!-- Nissan Skyline GT-R R34 -->
+<div class="card" data-name="Nissan Skyline GT-R R34" data-info="Leyenda japonesa conocida como 'Godzilla'. Precisión y potencia icónica." data-img="img/skyline.jpg" data-hp="330 HP" data-vmax="250 km/h" data-acc="4.9s" data-sound="https://cdn.pixabay.com/download/audio/2021/09/09/audio_365a066f79.mp3?filename=car-engine-rev-1.mp3">
+  <img src="img/skyline.jpg" alt="Nissan Skyline GT-R R34">
+  <div class="card-content">
+    <h3>Nissan Skyline GT-R R34</h3>
+    <p class="stat">Potencia: 330 HP</p>
+    <p class="stat">Vel. Máx: 250 km/h</p>
+    <p class="stat">0-100 km/h: 4.9s</p>
+    <button class="more-btn">Más Información</button>
+  </div>
+</div>
+
+    <!-- Subaru WRX STI -->
+<div class="card" data-name="Subaru WRX STI" data-info="Famoso en rallies. Motor boxer y tracción integral para máximo control." data-img="img/subaru.jpg" data-hp="305 HP" data-vmax="255 km/h" data-acc="4.8s" data-sound="https://cdn.pixabay.com/download/audio/2021/09/03/audio_2bee5b7d7d.mp3?filename=subaru-wrx-sti-rev.mp3">
+  <img src="img/subaru.jpg" alt="Subaru WRX STI">
+  <div class="card-content">
+    <h3>Subaru WRX STI</h3>
+    <p class="stat">Potencia: 305 HP</p>
+    <p class="stat">Vel. Máx: 255 km/h</p>
+    <p class="stat">0-100 km/h: 4.8s</p>
+    <button class="more-btn">Más Información</button>
+  </div>
+</div>
+
+    <!-- Audi R8 V10 -->
+<div class="card" data-name="Audi R8 V10" data-info="Superdeportivo de lujo con motor V10. Elegante pero brutal en pista." data-img="img/audi.jpeg" data-hp="602 HP" data-vmax="330 km/h" data-acc="3.2s" data-sound="https://cdn.pixabay.com/download/audio/2022/06/14/audio_a5e1f66b75.mp3?filename=revving-engine.mp3">
+  <img src="img/audi.jpeg" alt="Audi R8 V10">
+  <div class="card-content">
+    <h3>Audi R8 V10</h3>
+    <p class="stat">Potencia: 602 HP</p>
+    <p class="stat">Vel. Máx: 330 km/h</p>
+    <p class="stat">0-100 km/h: 3.2s</p>
+    <button class="more-btn">Más Información</button>
+  </div>
+</div>
+
+    <section id="autores">
+    <h2>Autores</h2>
+    <div class="autor-box">Steffany Michelle Alvarado Lopez</div>
+    <div class="autor-box">Gabriel Isaias Robles Espinoza</div>
+  </section>
+
+  </div>
+</div>
+
+<div id="modal">
+  <div class="modal-box">
+    <img id="modalImg" alt="">
+    <h2 id="modalTitle"></h2>
+    <p id="modalInfo"></p>
+    <button class="close" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
+
+<script>
+  const modal=document.getElementById('modal');
+  const modalImg=document.getElementById('modalImg');
+  const modalTitle=document.getElementById('modalTitle');
+  const modalInfo=document.getElementById('modalInfo');
+  let engineSound=new Audio();
+
+  document.querySelectorAll('.more-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const card=btn.closest('.card');
+      modalImg.src=card.dataset.img;
+      modalTitle.textContent=card.dataset.name;
+      modalInfo.textContent=card.dataset.info + "\n\nPotencia: " + card.dataset.hp + "\nVelocidad Máxima: " + card.dataset.vmax + "\n0-100 km/h: " + card.dataset.acc;
+      // reproducir sonido (clic del usuario permite reproducir)
+      if(card.dataset.sound){
+        engineSound.src = card.dataset.sound;
+        engineSound.currentTime = 0;
+        engineSound.play().catch(()=>{/* si el navegador bloquea autoplay, ignoramos */});
+      }
+      modal.classList.add('show');
+    })
+  })
+
+  function closeModal(){ modal.classList.remove('show'); engineSound.pause(); engineSound.currentTime = 0; }
+  function toggleTheme(){ document.body.classList.toggle('light') }
+  function scrollToCars(){ document.getElementById('autos').scrollIntoView({behavior:'smooth'})}
+</script>
+
+</body>
+</html>
